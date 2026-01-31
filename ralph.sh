@@ -5,7 +5,7 @@
 set -e
 
 # Parse arguments
-TOOL="amp"  # Default to amp for backwards compatibility
+TOOL="claude"  # Default to claude (amp optional via --tool amp)
 MAX_ITERATIONS=10
 
 while [[ $# -gt 0 ]]; do
@@ -89,6 +89,10 @@ for i in $(seq 1 $MAX_ITERATIONS); do
 
   # Run the selected tool with the ralph prompt
   if [[ "$TOOL" == "amp" ]]; then
+    if [ ! -f "$SCRIPT_DIR/prompt.md" ]; then
+      echo "Error: prompt.md not found at $SCRIPT_DIR/prompt.md (required for --tool amp)." >&2
+      exit 2
+    fi
     OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | amp --dangerously-allow-all 2>&1 | tee /dev/stderr) || true
   else
     # Claude Code: use --dangerously-skip-permissions for autonomous operation, --print for output

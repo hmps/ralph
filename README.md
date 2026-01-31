@@ -11,8 +11,8 @@ Based on [Geoffrey Huntley's Ralph pattern](https://ghuntley.com/ralph/).
 ## Prerequisites
 
 - One of the following AI coding tools installed and authenticated:
-  - [Amp CLI](https://ampcode.com) (default)
-  - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`npm install -g @anthropic-ai/claude-code`)
+  - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (`npm install -g @anthropic-ai/claude-code`) (default)
+  - [Amp CLI](https://ampcode.com) (optional; use `--tool amp`)
 - `jq` installed (`brew install jq` on macOS)
 - A git repository for your project
 
@@ -27,10 +27,10 @@ Copy the ralph files into your project:
 mkdir -p scripts/ralph
 cp /path/to/ralph/ralph.sh scripts/ralph/
 
-# Copy the prompt template for your AI tool of choice:
+# Copy the prompt template(s) for your AI tool of choice:
+cp /path/to/ralph/CLAUDE.md scripts/ralph/CLAUDE.md    # For Claude Code (recommended)
+# AND/OR
 cp /path/to/ralph/prompt.md scripts/ralph/prompt.md    # For Amp
-# OR
-cp /path/to/ralph/CLAUDE.md scripts/ralph/CLAUDE.md    # For Claude Code
 
 chmod +x scripts/ralph/ralph.sh
 ```
@@ -110,14 +110,14 @@ This creates `prd.json` with user stories structured for autonomous execution.
 ### 3. Run Ralph
 
 ```bash
-# Using Amp (default)
+# Using Claude Code (default)
 ./scripts/ralph/ralph.sh [max_iterations]
 
-# Using Claude Code
-./scripts/ralph/ralph.sh --tool claude [max_iterations]
+# Using Amp
+./scripts/ralph/ralph.sh --tool amp [max_iterations]
 ```
 
-Default is 10 iterations. Use `--tool amp` or `--tool claude` to select your AI coding tool.
+Default is 10 iterations. Use `--tool claude` or `--tool amp` to select your AI coding tool.
 
 Ralph will:
 1. Create a feature branch (from PRD `branchName`)
