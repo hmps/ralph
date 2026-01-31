@@ -88,11 +88,17 @@ for i in $(seq 1 $MAX_ITERATIONS); do
   echo "==============================================================="
 
   # Run the selected tool with the ralph prompt
+  # Always require both prompt templates to be present.
+  if [ ! -f "$SCRIPT_DIR/prompt.md" ]; then
+    echo "Error: prompt.md not found at $SCRIPT_DIR/prompt.md (required for Ralph runs)." >&2
+    exit 2
+  fi
+  if [ ! -f "$SCRIPT_DIR/CLAUDE.md" ]; then
+    echo "Error: CLAUDE.md not found at $SCRIPT_DIR/CLAUDE.md (required for Ralph runs)." >&2
+    exit 2
+  fi
+
   if [[ "$TOOL" == "amp" ]]; then
-    if [ ! -f "$SCRIPT_DIR/prompt.md" ]; then
-      echo "Error: prompt.md not found at $SCRIPT_DIR/prompt.md (required for --tool amp)." >&2
-      exit 2
-    fi
     OUTPUT=$(cat "$SCRIPT_DIR/prompt.md" | amp --dangerously-allow-all 2>&1 | tee /dev/stderr) || true
   else
     # Claude Code: use --dangerously-skip-permissions for autonomous operation, --print for output
